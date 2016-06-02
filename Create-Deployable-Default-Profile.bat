@@ -2,7 +2,7 @@
 :: Script Name: Create-Deployable-Default-Profile
 :: Original Author: jfullmer
 :: Created Date: 2016-02-18 16:39:23
-:: Last Updated Date: 2016-04-12 17:09:35
+:: Last Updated Date: 2016-06-02 14:50:07
 :: Update Author: jfullmer
 :: Version: 3.8
 ::-----------------------------------------------------------------------------
@@ -36,7 +36,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 :copySelf
 	IF NOT %pwd%==C:\ (
 		echo. Copying self to C drive
-		net use \\arrowfs3\scripts /USER:%domain%\%username% %password%	
+		net use \\script\share /USER:%domain%\%username% %password%	
 		XCOPY %networkPathToScript% C:\ /H /Y
 	 	net session >nul 2>&1
 	    if %errorLevel% == 0 (
@@ -71,7 +71,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	set dLocal=C:\Users\Default\AppData\Local
 	set cRoam=C:\Users\%cUser%\AppData\Roaming
 	set dRoam=C:\Users\Default\AppData\Roaming
-	set profiles=\\arrowfs1\IT\DefaultProfiles
+	set profiles=\\path\toshare\DefaultProfiles
 	net use %profiles% /USER:%domain%\%username% %password%
 	call :OSversion
 	call :setDept

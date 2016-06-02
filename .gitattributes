@@ -1,7 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=crlf
-*.bat eol=crlf
-*.log eol=crlf
+*.bat eol=crl
+f*.log eol=crlf
 *.xml eol=crlf
 *.ps1 eol=crlf
 *.tmpl eol=crlf
@@ -17,8 +17,8 @@
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain
 *.docx diff=astextplain
-*.DOCX diff=astextplain
-*.dot  diff=astextplain
+*.DOCX diff=astextplai
+n*.dot  diff=astextplain
 *.DOT  diff=astextplain
 *.pdf  diff=astextplain
 *.PDF	 diff=astextplain
