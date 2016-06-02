@@ -1,0 +1,27 @@
+# Auto detect text files and perform LF normalization
+* text=crlf
+*.bat eol=crlf
+*.log eol=crlf
+*.xml eol=crlf
+*.ps1 eol=crlf
+*.tmpl eol=crlf
+*.txt eol=crlf
+*.reg eol=crlf
+
+
+
+# Custom for Visual Studio
+*.cs     diff=csharp
+
+# Standard to msysgit
+*.doc	 diff=astextplain
+*.DOC	 diff=astextplain
+*.docx diff=astextplain
+*.DOCX diff=astextplain
+*.dot  diff=astextplain
+*.DOT  diff=astextplain
+*.pdf  diff=astextplain
+*.PDF	 diff=astextplain
+*.rtf	 diff=astextplain
+*.RTF	 diff=astextplain
+*.camrec filter=lfs diff=lfs merge=lfs -text
