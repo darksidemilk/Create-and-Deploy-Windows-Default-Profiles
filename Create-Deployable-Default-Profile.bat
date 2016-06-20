@@ -37,7 +37,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	IF NOT %pwd%==C:\ (
 		echo. Copying self to C drive
 		net use \\script\share /USER:%domain%\%username% %password%	
-		XCOPY %networkPathToScript% C:\ /H /Y
+		XCOPY "%networkPathToScript%" C:\ /H /Y
 	 	net session >nul 2>&1
 	    if %errorLevel% == 0 (
 			echo opening copied version.
@@ -72,7 +72,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	set cRoam=C:\Users\%cUser%\AppData\Roaming
 	set dRoam=C:\Users\Default\AppData\Roaming
 	set profiles=\\path\toshare\DefaultProfiles
-	net use %profiles% /USER:%domain%\%username% %password%
+	net use "%profiles%" /USER:%domain%\%username% %password%
 	call :OSversion
 	call :setDept
 		
@@ -84,11 +84,11 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	echo. What department/group is this profile for? (no spaces)
 	echo. The Current Choices are... (A different entry will create a new folder)
 	rem list profiles
-	dir /b %profiles%\%winVer%
+	dir /b "%profiles%\%winVer%"
 	set /P dept="Enter The Dept Here -> "
 	set share=%profiles%\%winVer%\%dept%
-	if NOT EXIST %share% mkdir %share%
-	if NOT EXIST %share%\logs mkdir %share%\logs
+	if NOT EXIST "%share%" mkdir "%share%"
+	if NOT EXIST "%share%\logs" mkdir "%share%\logs"
 	set logs=%share%\logs
 	EXIT /B
 
@@ -166,7 +166,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 
 	call :funcHead "Copying custom settings (i.e. task bar pins and toolbars, desktop background, etc.) from ntuser .dat system files..."
 	
-	XCOPY %custom%\ntuser* %default%\ /H /Y > %logs%\ntuserFiles.log
+	XCOPY "%custom%\ntuser*" "%default%\" /H /Y > %logs%\ntuserFiles.log
 
 	echo. Done Copying Custom Settings
 	call :dots
@@ -177,10 +177,10 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 
 	call :funcHead "Copying profile to network!"
 
-	ROBOCOPY %default% %share%\Default /S /MIR /R:1 /W:1 /MT:128 /ZB /XJ
-	XCOPY %default%\ntuser* %share%\Default\ /H /Y > %logs%\ntuserFilesRemote.log
+	ROBOCOPY "%default%" "%share%\Default" /S /MIR /R:1 /W:1 /MT:128 /ZB /XJ
+	XCOPY "%default%\ntuser*" "%share%\Default\" /H /Y > "%logs%\ntuserFilesRemote.log"
 
-	net use %share% /delete 
+	net use "%share%" /delete 
 
 	EXIT /B
 
