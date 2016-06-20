@@ -47,7 +47,7 @@ exit
 	set cRoam=C:\Users\%cUser%\AppData\Roaming
 	set dRoam=C:\Users\Default\AppData\Roaming
 	set share=\\path\to\DefaultProfiles\%winVer%\%dept%
-	net use %share% /USER:%domain%\%username% %password%	
+	net use "%share%" /USER:%domain%\%username% %password%	
 		
 	call :dots
 	EXIT /B
@@ -70,12 +70,12 @@ exit
 
 	call :funcHead "Copying profile From network!"
 	echo. Delete and recreate default profile folder so there aren't remnants of other profiles...
-	rmdir %default% /S /Q
-	mkdir %default% 
-	ROBOCOPY %share%\Default %default% /S /MIR /R:1 /W:1 /MT:128 /ZB /LOG:C:\defaultProfileApplied-%dept%.log
-	XCOPY %share%\Default\ntuser* %default%\ /H /Y > C:\defaultProfile-ntuser-%dept%.log
+	rmdir "%default%" /S /Q
+	mkdir "%default%"
+	ROBOCOPY "%share%\Default" "%default%" /S /MIR /R:1 /W:1 /MT:128 /ZB /LOG:"C:\defaultProfileApplied-%dept%.log"
+	XCOPY "%share%\Default\ntuser*" "%default%\" /H /Y > "C:\defaultProfile-ntuser-%dept%.log"
 
-	net use %share% /delete 
+	net use "%share%" /delete 
 
 	EXIT /B
 
