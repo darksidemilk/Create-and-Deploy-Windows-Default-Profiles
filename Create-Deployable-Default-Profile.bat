@@ -2,9 +2,9 @@
 :: Script Name: Create-Deployable-Default-Profile
 :: Original Author: jfullmer
 :: Created Date: 2016-02-18 16:39:23
-:: Last Updated Date: 2016-06-02 14:50:07
-:: Update Author: jfullmer
-:: Version: 3.8
+:: Last Updated Date: 2016-08-22 13:48:07
+:: Update Author: Quazz
+:: Version: 4.0
 ::-----------------------------------------------------------------------------
 
 @ECHO OFF
@@ -18,6 +18,7 @@ set /p username="Username for network share?: "
 set /p passwd="Password for network share?: "
 set /p profiles="Enter the full path to where you want to store the default profiles. i.e. \\share\DefaultProfiles: "
 set /p networkPathToScript="Enter full path to this file/script on the network so it can be copied to the root of the C drive and run from there: "
+
 call :main
 del C:\Create-Deployable-Default-Profile.bat & exit
 
@@ -32,13 +33,13 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	call :CustomSettings
 	call :CopyToNetwork
 	call :funcHead "Done creating custom default profile! & echo.Goodbye"	
-	EXIT /B
+EXIT /B
 
 :copySelf
 	IF NOT %pwd%==C:\ (
 		echo. Copying self to C drive
 		net use \\script\share /USER:%domain%\%username% %password%	
-		XCOPY %networkPathToScript% C:\ /H /Y
+		XCOPY "%networkPathToScript%" C:\ /H /Y
 	 	net session >nul 2>&1
 	    if %errorLevel% == 0 (
 			echo opening copied version.
@@ -50,7 +51,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	    	exit
 		)
     )
-	EXIT /B
+EXIT /B
 
 :setVars
 	REM Function to set script variables
@@ -72,25 +73,26 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	set dLocal=C:\Users\Default\AppData\Local
 	set cRoam=C:\Users\%cUser%\AppData\Roaming
 	set dRoam=C:\Users\Default\AppData\Roaming
-	net use %profiles% /USER:%domain%\%username% %password%
+	
+	net use "%profiles%" /USER:%domain%\%username% %password%
 	call :OSversion
 	call :setDept
 		
 	call :dots
-	EXIT /B
+EXIT /B
 
 :setDept
 	REM Function to set department via prompt. 
 	echo. What department/group is this profile for? (no spaces)
 	echo. The Current Choices are... (A different entry will create a new folder)
 	REM list profiles
-	dir /b %profiles%\%winVer%
+	dir /b "%profiles%\%winVer%"
 	set /P dept="Enter The Dept Here -> "
 	set share=%profiles%\%winVer%\%dept%
-	if NOT EXIST %share% mkdir %share%
-	if NOT EXIST %share%\logs mkdir %share%\logs
+	if NOT EXIST "%share%" mkdir "%share%"
+	if NOT EXIST "%share%\logs" mkdir "%share%\logs"
 	set logs=%share%\logs
-	EXIT /B
+EXIT /B
 
 :OSversion
 	REM Function to get current OS version
@@ -102,8 +104,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	if "%os%" == "6.2" set winVer=Win8
 	if "%os%" == "6.3" set winVer=Win8.1
 	if "%os%" == "10.0" set winVer=Win10
-
-	EXIT /B
+EXIT /B
 
 :copyDir
 	REM Function inputs - 1 = display of what is copying 2 = source folder 3 = destination folder 
@@ -130,7 +131,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	echo. Copying %~1...
 	ROBOCOPY "%~2" "%~3" /S /MIR /MT:128 /LOG:"%logs%\%~1.log" /IS /R:1 /W:1 /ZB
 	echo. Done Copying %~1
-	EXIT /B
+EXIT /B
 
 :AppData
 	REM Function to copy all Customizations settings that are stored in files in the AppData folder
@@ -156,7 +157,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	
 	echo. Done Copying AppData Folders...
 	call :dots
-	EXIT /B
+EXIT /B
 
 :CustomSettings
 	REM This Function copies the ntuser.dat and related system files that store things like task bar pin order, 
@@ -166,32 +167,32 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 
 	call :funcHead "Copying custom settings (i.e. task bar pins and toolbars, desktop background, etc.) from ntuser .dat system files..."
 	
-	XCOPY %custom%\ntuser* %default%\ /H /Y > %logs%\ntuserFiles.log
+	XCOPY "%custom%\ntuser*" "%default%\" /H /Y > %logs%\ntuserFiles.log
 
 	echo. Done Copying Custom Settings
 	call :dots
-	EXIT /B
+EXIT /B
 
 :CopyToNetwork
 	REM This copies the newly created profile to the network share
 
 	call :funcHead "Copying profile to network!"
 
-	ROBOCOPY %default% %share%\Default /S /MIR /R:1 /W:1 /MT:128 /ZB /XJ
-	XCOPY %default%\ntuser* %share%\Default\ /H /Y > %logs%\ntuserFilesRemote.log
+	ROBOCOPY "%default%" "%share%\Default" /S /MIR /R:1 /W:1 /MT:128 /ZB /XJ
+	XCOPY "%default%\ntuser*" "%share%\Default\" /H /Y > "%logs%\ntuserFilesRemote.log"
 
-	net use %share% /delete 
+	net use "%share%" /delete 
 
-	EXIT /B
+EXIT /B
 
 :dots
 	REM just echoing dots in a Function instead of copy pasting them so that it's consistent
 	echo ......................................................................
-	EXIT /B
+EXIT /B
 
 :funcHead
 	REM A simple function for displaying a consistent header at the start of functions
 	call :dots
 	echo. %~1
 	call :dots
-	EXIT /B
+EXIT /B
