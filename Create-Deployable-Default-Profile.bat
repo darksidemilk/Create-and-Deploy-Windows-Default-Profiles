@@ -16,7 +16,8 @@ SET pwd=%~dp0
 set /p domain="domain for network login to share with network path (put localhost for local login) ?: "
 set /p username="Username for network share?: "
 set /p passwd="Password for network share?: "
-set /p networkPathToScript="Enter full path to this file on the network: "
+set /p profiles="Enter the full path to where you want to store the default profiles. i.e. \\share\DefaultProfiles: "
+set /p networkPathToScript="Enter full path to this file/script on the network so it can be copied to the root of the C drive and run from there: "
 call :main
 del C:\Create-Deployable-Default-Profile.bat & exit
 
@@ -71,7 +72,6 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	set dLocal=C:\Users\Default\AppData\Local
 	set cRoam=C:\Users\%cUser%\AppData\Roaming
 	set dRoam=C:\Users\Default\AppData\Roaming
-	set profiles=\\path\toshare\DefaultProfiles
 	net use %profiles% /USER:%domain%\%username% %password%
 	call :OSversion
 	call :setDept
