@@ -12,7 +12,7 @@
 	REM This script copies a Customized windows 10 profile to the default profile so that
 	REM all new profiles are created with the same settings
 
-SET pwd=%~dp0
+set pwd=%~dp0
 set /p domain="domain for network login to share with network path (put localhost for local login) ?: "
 set /p username="Username for network share?: "
 set /p passwd="Password for network share?: "
@@ -61,7 +61,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 
 	call :funcHead "Setting directory variables..."
 	
-	rem set cUser=adl
+	REM set cUser=adl
 	echo. Don't run this script from the user you're copying!
 	set /p cUser="What is the username of the profile you customized? -> "
 	set custom=C:\Users\%cUser%
@@ -80,10 +80,10 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	EXIT /B
 
 :setDept
-	rem Function to set department via prompt. 
+	REM Function to set department via prompt. 
 	echo. What department/group is this profile for? (no spaces)
 	echo. The Current Choices are... (A different entry will create a new folder)
-	rem list profiles
+	REM list profiles
 	dir /b %profiles%\%winVer%
 	set /P dept="Enter The Dept Here -> "
 	set share=%profiles%\%winVer%\%dept%
@@ -93,7 +93,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	EXIT /B
 
 :OSversion
-	:: Function to get current OS version
+	REM Function to get current OS version
 	echo. Getting OS...
 	FOR /F "tokens=4-5 delims=. " %%i in ('ver') do set os=%%i.%%j
 	if "%os%" == "5.1" set winVer=WinXP
@@ -149,7 +149,7 @@ del C:\Create-Deployable-Default-Profile.bat & exit
 	REM That logon script would only need to be one line like so...
 	REM ROBOCOPY "%localAppData%\MicrosoftEdge\User" "%localAppData%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\MicrosoftEdge\User" /S /MIR /MT:64 /LOG:C:\logs\edgeBookmarks.txt /IS /R:1 /W:1 
 	
-	rem call :copyDir "Microsoft Edge Customizations" "%cLocal%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\MicrosoftEdge\User" "%dLocal%\MicrosoftEdge\User"
+	REM call :copyDir "Microsoft Edge Customizations" "%cLocal%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\MicrosoftEdge\User" "%dLocal%\MicrosoftEdge\User"
 	call :copyDir "Start Menu Tiles Part 1 of 3" "%cLocal%\TileDataLayer" "%dLocal%\TileDataLayer"
 	call :copyDir "Start Menu Tiles Part 2 of 3" "%cRoam%\Microsoft\Windows\Start Menu" "%dRoam%\Microsoft\Windows\Start Menu"
 	call :copyDir "Start Menu Tiles Part 3 of 3" "%cLocal%\Microsoft\Windows\Shell" "%dLocal%\Microsoft\Windows\Shell"
