@@ -9,3 +9,4 @@ This was originally created for windows 10 and done while trying to make it so m
 
 I have plans to make this much more universal and for it to use more registry hive editing of specific things, which would in turn allow for editing just one part of an already created profile.
 
+NOTE: Coming Soon - This will be rewritten with powershell with integrations for using chocolatey packages to create and apply the profiles. Check out chocolatey.org. I use chocolatey for business. But some aspects can be done with the free version. 
